@@ -132,6 +132,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 **Kaushal Kumar**
 GitHub: [@kaushalkumar94](https://github.com/kaushalkumar94)
+Leetcode: [leetcode grind here](https://leetcode.com/u/kaushal5354/)
 
 ---
 
