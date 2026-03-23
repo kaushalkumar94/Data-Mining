@@ -1,10 +1,10 @@
-# 🔍 Data Mining Lab Work
+# Data Mining Lab Work
 
 A comprehensive collection of hands-on data mining labs covering core concepts from Python fundamentals to machine learning — implemented using Python, Jupyter Notebooks, and popular data science libraries.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Data-Mining/
@@ -38,7 +38,7 @@ Data-Mining/
 
 ---
 
-## 🧪 Labs Overview
+## Labs Overview
 
 ### Lab 1 — Introduction to Python
 **File:** `Lab1/IntroductionToPython.py`
@@ -92,7 +92,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Tool / Library | Purpose |
 |----------------|---------|
@@ -106,7 +106,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -128,7 +128,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 ---
 
-## 👤 Author
+## Author
 
 **Kaushal Kumar**
 GitHub: [@kaushalkumar94](https://github.com/kaushalkumar94)
