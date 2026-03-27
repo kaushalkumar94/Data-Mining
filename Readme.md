@@ -31,6 +31,11 @@ Data-Mining/
 │   ├── Groceries_dataset.csv
 │   └── readme.md
 └── lab7/
+|    ├── dataset.py
+|   ├── feature selection.ipynb
+|   └── readme.md
+|
+└── lab8/
     ├── dataset.py
     ├── feature selection.ipynb
     └── readme.md
