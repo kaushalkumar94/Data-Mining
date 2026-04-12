@@ -186,14 +186,17 @@ The script will:
 
 ## Visualisations
 
-The script generates the following four figures:
+### California Housing — Model Comparison
+![Housing Model Comparison](housing_model_comparison.png)
 
-| File | Description |
-|---|---|
-| `housing_model_comparison.png` | 4-panel bar chart — R², MAE, RMSE, Training Time for Housing |
-| `diabetes_model_comparison.png` | 4-panel bar chart — R², MAE, RMSE, Training Time for Diabetes |
-| `cross_dataset_comparison.png` | Grouped bar chart comparing R² and RMSE across both datasets |
-| `metrics_heatmap.png` | Normalised heatmap (green = best, red = worst) for all models and metrics |
+### Diabetes — Model Comparison
+![Diabetes Model Comparison](diabetes_model_comparison.png)
+
+### Cross-Dataset Comparison
+![Cross Dataset Comparison](cross_dataset_comparison.png)
+
+### Metrics Heatmap
+![Metrics Heatmap](metrics_heatmap.png)
 
 ---
 
