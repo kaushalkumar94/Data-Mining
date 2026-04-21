@@ -30,15 +30,21 @@ Data-Mining/
 │   ├── Apriori on DS.ipynb
 │   ├── Groceries_dataset.csv
 │   └── readme.md
-└── lab7/
-|    ├── dataset.py
-|   ├── feature selection.ipynb
-|   └── readme.md
-|
-└── lab8/
-    ├── dataset.py
-    ├── feature selection.ipynb
-    └── readme.md
+├── lab7/
+│   ├── dataset.py
+│   ├── feature selection.ipynb
+│   └── readme.md
+├── lab8/
+│   ├── dataset.py
+│   └── readme.md
+└── lab9/
+    ├── regression_lab.py
+    ├── README.md
+    └── outputs/
+        ├── housing_model_comparison.png
+        ├── diabetes_model_comparison.png
+        ├── cross_dataset_comparison.png
+        └── metrics_heatmap.png
 ```
 
 ---
@@ -97,6 +103,33 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 ---
 
+### Lab 8 — Classification Algorithms Comparison
+**Files:** `lab8/dataset.py`, `lab8/readme.md`
+
+A comprehensive comparison of **11 classification algorithms** applied to the Iris and Breast Cancer datasets. Covers a wide range of model families — from simple probabilistic models to ensemble methods and neural networks — evaluated across Accuracy, Precision, Recall, F1 Score, and training/prediction time.
+
+Algorithms compared:
+- Naive Bayes, Logistic Regression, SVM, Decision Tree, KNN, Perceptron
+- Random Forest, Gradient Boosting, AdaBoost, Extra Trees, MLP Neural Net
+
+Key findings: Naive Bayes, SVM, and Decision Tree achieve the highest accuracy on Iris (0.9667). Ensemble methods offer robustness at the cost of training time. Perceptron struggles on non-linearly separable classes.
+
+---
+
+### Lab 9 — Regression Algorithms Comparison
+**Files:** `lab9/regression_lab.py`, `lab9/README.md`, `lab9/outputs/`
+
+A comprehensive comparison of **10 regression algorithms** applied to the California Housing and Diabetes datasets. Covers parametric, regularized, ensemble, kernel-based, and instance-based regressors, evaluated using MAE, MSE, RMSE, and R² Score.
+
+Algorithms compared:
+- Linear Regression, Ridge, Lasso, Elastic Net
+- Decision Tree, Random Forest, Gradient Boosting, AdaBoost
+- SVR (RBF kernel), KNN Regressor
+
+Key findings: Gradient Boosting achieved the best R² on both datasets (0.8624 on Housing, 0.5062 on Diabetes). Random Forest is the best accuracy/speed trade-off. SVR and KNN are not suitable for large datasets.
+
+---
+
 ## Technologies Used
 
 | Tool / Library | Purpose |
@@ -106,6 +139,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 | Pandas | Data manipulation and analysis |
 | NumPy | Numerical computations |
 | Matplotlib | Data visualization |
+| Seaborn | Enhanced statistical visualizations |
 | Scikit-learn | Machine learning models |
 | mlxtend | Apriori algorithm implementation |
 
@@ -121,7 +155,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
 
 2. **Install dependencies**
    ```bash
-   pip install pandas numpy matplotlib scikit-learn mlxtend jupyter
+   pip install pandas numpy matplotlib seaborn scikit-learn mlxtend jupyter
    ```
 
 3. **Launch Jupyter Notebook**
@@ -129,7 +163,7 @@ Applies machine learning models to the **Breast Cancer dataset**. Covers feature
    jupyter notebook
    ```
 
-4. Navigate to any lab folder and open the `.ipynb` file to get started.
+4. Navigate to any lab folder and open the `.ipynb` file to get started. For `.py` scripts (Lab 8, Lab 9), run them directly with `python <filename>.py`.
 
 ---
 
