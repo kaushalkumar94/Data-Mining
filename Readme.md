@@ -35,7 +35,7 @@ Data-Mining/
 │   ├── feature selection.ipynb
 │   └── readme.md
 ├── lab8/
-│   ├── dataset.py
+│   ├── ML_Algorithms.ipynb
 │   └── readme.md
 └── lab9/
     ├── regression_lab.py
