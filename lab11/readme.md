@@ -1,10 +1,10 @@
-# 🔍 Practical 11 — Anomaly Detection Techniques: A Comparative Study
+# Practical 11 — Anomaly Detection Techniques: A Comparative Study
 
 > Identifying outliers and unusual patterns using five unsupervised anomaly detection algorithms across synthetic and real-world datasets.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Objective](#objective)
 - [Datasets Used](#datasets-used)
@@ -20,13 +20,13 @@
 
 ---
 
-## 🎯 Objective
+## Objective
 
 To understand how different anomaly detection techniques can be applied to datasets to identify outliers and unusual patterns, and to compare their performance across evaluation metrics, hyperparameter sensitivity, and computational efficiency.
 
 ---
 
-## 📦 Datasets Used
+## Datasets Used
 
 ### 1. Synthetic Dataset (`make_blobs` + Injected Outliers)
 
@@ -51,13 +51,13 @@ Normal points were generated using `make_blobs` with 2 centers and `cluster_std=
 | Normal class | Benign (357 samples) |
 | Anomaly class | Malignant (212 samples) |
 | Contamination rate | ~9% (used for model config) |
-| Dimensionality reduction | PCA → 2D (for visualization) |
+| Dimensionality reduction | PCA -> 2D (for visualization) |
 
 Malignant cases are treated as anomalies. This reflects a realistic medical scenario where rare or dangerous cases must be flagged.
 
 ---
 
-## ⚙️ Preprocessing
+## Preprocessing
 
 ```python
 from sklearn.preprocessing import StandardScaler
@@ -80,7 +80,7 @@ The dataset has 30 features. PCA reduces it to 2 principal components for scatte
 
 ---
 
-## 🤖 Algorithms Implemented
+## Algorithms Implemented
 
 | # | Algorithm | Type | Key Parameters |
 |---|---|---|---|
@@ -95,7 +95,7 @@ DBSCAN's native `-1` (noise) label is mapped to `1` (anomaly).
 
 ---
 
-## 📊 Results & Output
+## Results & Output
 
 ### Terminal Output
 
@@ -104,20 +104,20 @@ DBSCAN's native `-1` (noise) label is mapped to `1` (anomaly).
 ANOMALY DETECTION — METRICS REPORT
 ============================================================
 
-────────────────────────────────────────────────────────────
+------------------------------------------------------------
 Dataset: Synthetic (blobs + injected outliers)
 Method                  Precision   Recall       F1   Time(s)
-────────────────────────────────────────────────────────────
+------------------------------------------------------------
 Isolation Forest            0.900    0.900    0.900    0.2132
 One-Class SVM               0.724    0.700    0.712    0.0019
 LOF                         0.833    0.833    0.833    0.0028
 Elliptic Envelope           0.833    0.833    0.833    0.0980
 DBSCAN                      1.000    0.767    0.868    0.0036
 
-────────────────────────────────────────────────────────────
+------------------------------------------------------------
 Dataset: Breast Cancer (malignant=anomaly)
 Method                  Precision   Recall       F1   Time(s)
-────────────────────────────────────────────────────────────
+------------------------------------------------------------
 Isolation Forest            0.635    0.156    0.250    0.1460
 One-Class SVM               0.547    0.137    0.219    0.0054
 LOF                         0.462    0.113    0.182    0.2752
@@ -138,7 +138,7 @@ Best on Breast Cancer: DBSCAN  (F1=0.543)
 
 | Method | Precision | Recall | F1-Score | Time (s) |
 |---|---|---|---|---|
-| **Isolation Forest** | **0.900** | **0.900** | **0.900** ✅ | 0.2132 |
+| **Isolation Forest** | **0.900** | **0.900** | **0.900** | 0.2132 |
 | One-Class SVM | 0.724 | 0.700 | 0.712 | 0.0019 |
 | LOF | 0.833 | 0.833 | 0.833 | 0.0028 |
 | Elliptic Envelope | 0.833 | 0.833 | 0.833 | 0.0980 |
@@ -152,11 +152,11 @@ Best on Breast Cancer: DBSCAN  (F1=0.543)
 | One-Class SVM | 0.547 | 0.137 | 0.219 | 0.0054 |
 | LOF | 0.462 | 0.113 | 0.182 | 0.2752 |
 | **Elliptic Envelope** | **0.865** | 0.212 | 0.341 | 0.9241 |
-| **DBSCAN** | 0.373 | **1.000** | **0.543** ✅ | 0.0027 |
+| **DBSCAN** | 0.373 | **1.000** | **0.543** | 0.0027 |
 
 ---
 
-## 🖼️ Visualizations
+## Visualizations
 
 ![Anomaly Detection Results](screenshots/anomaly_detection.png)
 
@@ -166,53 +166,53 @@ Each scatter plot shows the detected anomalies for one method on one dataset. Po
 
 | Color | Marker | Meaning |
 |---|---|---|
-| 🔴 Red | `X` | **True Positive** — Anomaly correctly detected |
-| 🟠 Orange | `▲` | **False Positive** — Normal point wrongly flagged |
-| 🔵 Blue | `●` | **False Negative** — Anomaly that was missed |
-| 🟢 Green | `●` | **True Negative** — Normal point correctly ignored |
+| Red | X | True Positive — Anomaly correctly detected |
+| Orange | Triangle | False Positive — Normal point wrongly flagged |
+| Blue | Circle | False Negative — Anomaly that was missed |
+| Green | Circle | True Negative — Normal point correctly ignored |
 
 **Row 1** — Synthetic dataset scatter plots (2D, original feature space after scaling)  
 **Row 2** — Breast Cancer scatter plots (2D after PCA projection)  
-**Rows 3–4** — Bar charts for Precision, Recall, and F1-Score on both datasets  
+**Rows 3-4** — Bar charts for Precision, Recall, and F1-Score on both datasets  
 **Row 5** — Computation time comparison + legend + summary panel
 
 ---
 
-## 📈 Performance Comparison
+## Performance Comparison
 
 ### F1-Score Summary
 
 ```
 Synthetic Dataset
-─────────────────────────────────────────
-Isolation Forest  ████████████████████  0.900  ✅ Best
-DBSCAN            ████████████████████  0.868
-LOF               ███████████████████   0.833
-Elliptic Envelope ███████████████████   0.833
-One-Class SVM     ████████████████      0.712
+-----------------------------------------
+Isolation Forest  ||||||||||||||||||||  0.900  Best
+DBSCAN            ||||||||||||||||||||  0.868
+LOF               |||||||||||||||||||   0.833
+Elliptic Envelope |||||||||||||||||||   0.833
+One-Class SVM     ||||||||||||||||      0.712
 
 Breast Cancer Dataset
-─────────────────────────────────────────
-DBSCAN            ████████████          0.543  ✅ Best
-Elliptic Envelope ████████              0.341
-Isolation Forest  ██████                0.250
-One-Class SVM     █████                 0.219
-LOF               ████                  0.182
+-----------------------------------------
+DBSCAN            ||||||||||||          0.543  Best
+Elliptic Envelope ||||||||              0.341
+Isolation Forest  ||||||                0.250
+One-Class SVM     |||||                 0.219
+LOF               ||||                  0.182
 ```
 
 ### Computation Time
 
 | Method | Synthetic | Breast Cancer | Verdict |
 |---|---|---|---|
-| One-Class SVM | 0.0019s | 0.0054s | ⚡ Fastest |
-| DBSCAN | 0.0036s | 0.0027s | ⚡ Very fast |
-| LOF | 0.0028s | 0.2752s | ✅ Fast on small data |
-| Isolation Forest | 0.2132s | 0.1460s | ✅ Consistent |
-| Elliptic Envelope | 0.0980s | 0.9241s | ⚠️ Slow on high-dim data |
+| One-Class SVM | 0.0019s | 0.0054s | Fastest |
+| DBSCAN | 0.0036s | 0.0027s | Very fast |
+| LOF | 0.0028s | 0.2752s | Fast on small data |
+| Isolation Forest | 0.2132s | 0.1460s | Consistent |
+| Elliptic Envelope | 0.0980s | 0.9241s | Slow on high-dim data |
 
 ---
 
-## 🔬 Observations & Analysis
+## Observations & Analysis
 
 ### 1. Isolation Forest
 - Achieved the **highest F1 of 0.900** on synthetic data — perfectly balanced precision and recall.
@@ -226,7 +226,7 @@ LOF               ████                  0.182
 
 ### 3. Local Outlier Factor (LOF)
 - Solid on synthetic data (F1 = 0.833), identifying local density deviations well.
-- Struggled on Breast Cancer — LOF is computationally O(n²) and loses effectiveness in 30-dimensional space (curse of dimensionality).
+- Struggled on Breast Cancer — LOF is computationally O(n^2) and loses effectiveness in 30-dimensional space (curse of dimensionality).
 - Best suited for low-to-medium dimensional datasets with varying cluster densities.
 
 ### 4. Elliptic Envelope
@@ -245,7 +245,7 @@ LOF               ████                  0.182
 
 | Algorithm | Sensitivity | Notes |
 |---|---|---|
-| Isolation Forest | Low–Medium | `contamination` must approximate true outlier ratio |
+| Isolation Forest | Low-Medium | `contamination` must approximate true outlier ratio |
 | One-Class SVM | High | Both `nu` and `gamma` need careful tuning |
 | LOF | Medium | `n_neighbors` affects local vs global view |
 | Elliptic Envelope | Low | Mainly sensitive to data distribution assumptions |
@@ -253,7 +253,7 @@ LOF               ████                  0.182
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 | Criterion | Best Method |
 |---|---|
@@ -276,20 +276,20 @@ In safety-critical domains (e.g., medical diagnosis), **high recall** is preferr
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 
 ```
 Practical-11-Anomaly-Detection/
-│
-├── anomaly_detection.py       # Main Python script
-├── README.md                  # This file
-└── screenshots/
-    └── anomaly_detection.png  # Output visualization
+|
+|-- anomaly_detection.py       # Main Python script
+|-- README.md                  # This file
+|-- screenshots/
+    |-- anomaly_detection.png  # Output visualization
 ```
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 ```
 numpy
@@ -305,7 +305,7 @@ pip install numpy matplotlib scikit-learn
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 ```bash
 # Clone or navigate to the practical folder
