@@ -69,7 +69,7 @@ A Python notebook (`Anomaly_Detection_Model_Comparison.ipynb`) that:
 
 The scatter plot shows the 2D feature space after standardization. Blue points are predicted **Normal (0)** and Red points are predicted **Anomalies (1)**. The two clusters of normal data are clearly visible, with outliers scattered around the periphery.
 
-![Isolation Forest Scatter Plot](scatter_plot.png)
+![Isolation Forest Scatter Plot](lab11/screenshots/scatter_plot.png)
 
 > Isolation Forest correctly identifies the scattered outlier points while keeping the two dense clusters intact.
 
@@ -81,7 +81,7 @@ F1 Score is used as the primary evaluation metric because the dataset is **class
 
 $$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$
 
-![F1 Score Comparison](f1_score.png)
+![F1 Score Comparison](lab11/screenshots/f1_score.png)
 
 | Model            | F1 Score |
 |-----------------|----------|
@@ -95,7 +95,7 @@ $$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$
 
 ### Computation Time Comparison
 
-![Computation Time Comparison](time_comparison.png)
+![Computation Time Comparison](lab11/screenshots/time_comparison.png)
 
 | Model            | Time (seconds) |
 |-----------------|----------------|
