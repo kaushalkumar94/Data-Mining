@@ -1,324 +1,148 @@
-# Practical 11 — Anomaly Detection Techniques: A Comparative Study
+# Lab 11 — Anomaly Detection Model Comparison
 
-> Identifying outliers and unusual patterns using five unsupervised anomaly detection algorithms across synthetic and real-world datasets.
+## Aim
 
----
-
-## Table of Contents
-
-- [Objective](#objective)
-- [Datasets Used](#datasets-used)
-- [Preprocessing](#preprocessing)
-- [Algorithms Implemented](#algorithms-implemented)
-- [Results & Output](#results--output)
-- [Visualizations](#visualizations)
-- [Performance Comparison](#performance-comparison)
-- [Observations & Analysis](#observations--analysis)
-- [Conclusion](#conclusion)
-- [Dependencies](#dependencies)
-- [How to Run](#how-to-run)
+To implement and compare three unsupervised anomaly detection algorithms — **Isolation Forest**, **One-Class SVM**, and **Local Outlier Factor (LOF)** — on a synthetic dataset, and evaluate them based on F1 Score and computation time.
 
 ---
 
-## Objective
+## Theory
 
-To understand how different anomaly detection techniques can be applied to datasets to identify outliers and unusual patterns, and to compare their performance across evaluation metrics, hyperparameter sensitivity, and computational efficiency.
-
----
-
-## Datasets Used
-
-### 1. Synthetic Dataset (`make_blobs` + Injected Outliers)
-
-| Property | Value |
-|---|---|
-| Normal samples | 300 (2 Gaussian clusters) |
-| Injected outliers | 30 (random uniform noise) |
-| Total samples | 330 |
-| Features | 2 |
-| Contamination rate | ~9.09% |
-
-Normal points were generated using `make_blobs` with 2 centers and `cluster_std=0.8`. Outliers were injected by sampling uniformly from `[-8, 8]` in both dimensions — simulating real-world noise that lies far from any cluster.
-
----
-
-### 2. Breast Cancer Dataset (`sklearn.datasets.load_breast_cancer`)
-
-| Property | Value |
-|---|---|
-| Total samples | 569 |
-| Features | 30 |
-| Normal class | Benign (357 samples) |
-| Anomaly class | Malignant (212 samples) |
-| Contamination rate | ~9% (used for model config) |
-| Dimensionality reduction | PCA -> 2D (for visualization) |
-
-Malignant cases are treated as anomalies. This reflects a realistic medical scenario where rare or dangerous cases must be flagged.
-
----
-
-## Preprocessing
-
-```python
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-
-# Feature scaling (critical for distance/density-based methods)
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Dimensionality reduction for visualization (Breast Cancer only)
-pca = PCA(n_components=2, random_state=42)
-X_2d = pca.fit_transform(X_scaled)
-```
-
-**Why StandardScaler?**
-Algorithms like LOF, One-Class SVM, and Elliptic Envelope compute distances or densities. Without scaling, features with larger numerical ranges dominate and produce biased results.
-
-**Why PCA for Breast Cancer?**
-The dataset has 30 features. PCA reduces it to 2 principal components for scatter plot visualization while retaining maximum variance.
-
----
-
-## Algorithms Implemented
-
-| # | Algorithm | Type | Key Parameters |
-|---|---|---|---|
-| 1 | **Isolation Forest** | Ensemble / Tree-based | `contamination=0.09` |
-| 2 | **One-Class SVM** | Kernel-based | `nu=0.09, kernel='rbf'` |
-| 3 | **Local Outlier Factor (LOF)** | Density-based | `n_neighbors=20, contamination=0.09` |
-| 4 | **Elliptic Envelope** | Statistical | `contamination=0.09` |
-| 5 | **DBSCAN** | Clustering / Noise detection | `eps=0.5, min_samples=5` |
-
-All methods output binary labels: `0 = normal`, `1 = anomaly`.  
-DBSCAN's native `-1` (noise) label is mapped to `1` (anomaly).
-
----
-
-## Results & Output
-
-### Terminal Output
-
-```
-============================================================
-ANOMALY DETECTION — METRICS REPORT
-============================================================
-
-------------------------------------------------------------
-Dataset: Synthetic (blobs + injected outliers)
-Method                  Precision   Recall       F1   Time(s)
-------------------------------------------------------------
-Isolation Forest            0.900    0.900    0.900    0.2132
-One-Class SVM               0.724    0.700    0.712    0.0019
-LOF                         0.833    0.833    0.833    0.0028
-Elliptic Envelope           0.833    0.833    0.833    0.0980
-DBSCAN                      1.000    0.767    0.868    0.0036
-
-------------------------------------------------------------
-Dataset: Breast Cancer (malignant=anomaly)
-Method                  Precision   Recall       F1   Time(s)
-------------------------------------------------------------
-Isolation Forest            0.635    0.156    0.250    0.1460
-One-Class SVM               0.547    0.137    0.219    0.0054
-LOF                         0.462    0.113    0.182    0.2752
-Elliptic Envelope           0.865    0.212    0.341    0.9241
-DBSCAN                      0.373    1.000    0.543    0.0027
-
-============================================================
-Best on Synthetic:     Isolation Forest (F1=0.900)
-Best on Breast Cancer: DBSCAN  (F1=0.543)
-============================================================
-```
-
----
-
-### Metric Tables
-
-#### Synthetic Dataset
-
-| Method | Precision | Recall | F1-Score | Time (s) |
-|---|---|---|---|---|
-| **Isolation Forest** | **0.900** | **0.900** | **0.900** | 0.2132 |
-| One-Class SVM | 0.724 | 0.700 | 0.712 | 0.0019 |
-| LOF | 0.833 | 0.833 | 0.833 | 0.0028 |
-| Elliptic Envelope | 0.833 | 0.833 | 0.833 | 0.0980 |
-| DBSCAN | 1.000 | 0.767 | 0.868 | 0.0036 |
-
-#### Breast Cancer Dataset
-
-| Method | Precision | Recall | F1-Score | Time (s) |
-|---|---|---|---|---|
-| Isolation Forest | 0.635 | 0.156 | 0.250 | 0.1460 |
-| One-Class SVM | 0.547 | 0.137 | 0.219 | 0.0054 |
-| LOF | 0.462 | 0.113 | 0.182 | 0.2752 |
-| **Elliptic Envelope** | **0.865** | 0.212 | 0.341 | 0.9241 |
-| **DBSCAN** | 0.373 | **1.000** | **0.543** | 0.0027 |
-
----
-
-## Visualizations
-
-![Anomaly Detection Results](screenshots/anomaly_detection.png)
-
-### How to Read the Scatter Plots
-
-Each scatter plot shows the detected anomalies for one method on one dataset. Points are color-coded as:
-
-| Color | Marker | Meaning |
-|---|---|---|
-| Red | X | True Positive — Anomaly correctly detected |
-| Orange | Triangle | False Positive — Normal point wrongly flagged |
-| Blue | Circle | False Negative — Anomaly that was missed |
-| Green | Circle | True Negative — Normal point correctly ignored |
-
-**Row 1** — Synthetic dataset scatter plots (2D, original feature space after scaling)  
-**Row 2** — Breast Cancer scatter plots (2D after PCA projection)  
-**Rows 3-4** — Bar charts for Precision, Recall, and F1-Score on both datasets  
-**Row 5** — Computation time comparison + legend + summary panel
-
----
-
-## Performance Comparison
-
-### F1-Score Summary
-
-```
-Synthetic Dataset
------------------------------------------
-Isolation Forest  ||||||||||||||||||||  0.900  Best
-DBSCAN            ||||||||||||||||||||  0.868
-LOF               |||||||||||||||||||   0.833
-Elliptic Envelope |||||||||||||||||||   0.833
-One-Class SVM     ||||||||||||||||      0.712
-
-Breast Cancer Dataset
------------------------------------------
-DBSCAN            ||||||||||||          0.543  Best
-Elliptic Envelope ||||||||              0.341
-Isolation Forest  ||||||                0.250
-One-Class SVM     |||||                 0.219
-LOF               ||||                  0.182
-```
-
-### Computation Time
-
-| Method | Synthetic | Breast Cancer | Verdict |
-|---|---|---|---|
-| One-Class SVM | 0.0019s | 0.0054s | Fastest |
-| DBSCAN | 0.0036s | 0.0027s | Very fast |
-| LOF | 0.0028s | 0.2752s | Fast on small data |
-| Isolation Forest | 0.2132s | 0.1460s | Consistent |
-| Elliptic Envelope | 0.0980s | 0.9241s | Slow on high-dim data |
-
----
-
-## Observations & Analysis
+Anomaly detection (also called outlier detection) is the task of identifying data points that deviate significantly from the majority of the data. Unlike supervised classification, anomaly detection typically operates **without labeled training data** — the model learns what "normal" looks like and flags deviations.
 
 ### 1. Isolation Forest
-- Achieved the **highest F1 of 0.900** on synthetic data — perfectly balanced precision and recall.
-- Performed moderately on Breast Cancer (F1 = 0.250) due to the high-dimensional, overlapping feature space.
-- Consistent runtime regardless of dataset size — scales well.
+
+Isolation Forest is an **ensemble-based** algorithm that isolates anomalies by randomly selecting a feature and then randomly selecting a split value between the max and min of that feature. Anomalies, being rare and different, require fewer splits to isolate and thus have shorter average path lengths in the isolation trees.
+
+- **How it works:** Builds an ensemble of isolation trees; anomaly score is based on how quickly a point is isolated.
+- **Key parameter:** `contamination` — the expected proportion of anomalies in the dataset.
+- **Strength:** Highly scalable, works well in high-dimensional data.
 
 ### 2. One-Class SVM
-- Weakest performer overall on both datasets.
-- Highly sensitive to `nu` and `gamma` — small changes in these parameters cause significant performance swings.
-- Very fast at inference but difficult to tune without labeled validation data.
+
+One-Class SVM is a **kernel-based** method that learns a decision boundary enclosing the "normal" region of the feature space. Points outside this boundary are flagged as anomalies.
+
+- **How it works:** Finds a hyperplane (in kernel space) that separates normal data from the origin with maximum margin.
+- **Key parameter:** `nu` — an upper bound on the fraction of outliers and a lower bound on support vectors.
+- **Strength:** Effective in high-dimensional spaces; works well with non-linear boundaries using RBF kernel.
 
 ### 3. Local Outlier Factor (LOF)
-- Solid on synthetic data (F1 = 0.833), identifying local density deviations well.
-- Struggled on Breast Cancer — LOF is computationally O(n^2) and loses effectiveness in 30-dimensional space (curse of dimensionality).
-- Best suited for low-to-medium dimensional datasets with varying cluster densities.
 
-### 4. Elliptic Envelope
-- Highest **precision on Breast Cancer (0.865)** — when it flags something, it is usually correct.
-- Very low recall (0.212) — it is too conservative and misses most real anomalies.
-- Assumes Gaussian distribution. Breast Cancer data is multi-modal, which violates this assumption and hurts performance.
-- Slowest on high-dimensional data (0.92s on Breast Cancer) due to covariance matrix estimation.
+LOF is a **density-based** algorithm that measures the local deviation of a data point relative to its neighbours. A point with a substantially lower density than its neighbours is considered an anomaly.
 
-### 5. DBSCAN
-- **Perfect precision (1.000)** on synthetic data — every point it flagged was a true outlier.
-- **Perfect recall (1.000)** on Breast Cancer — caught every single malignant case, but at the cost of many false positives (precision = 0.373).
-- Best overall F1 on Breast Cancer (0.543) despite low precision, because recall dominates in medical contexts.
-- Extremely sensitive to `eps` — requires tuning via k-distance plot for best results.
-
-### Hyperparameter Sensitivity
-
-| Algorithm | Sensitivity | Notes |
-|---|---|---|
-| Isolation Forest | Low-Medium | `contamination` must approximate true outlier ratio |
-| One-Class SVM | High | Both `nu` and `gamma` need careful tuning |
-| LOF | Medium | `n_neighbors` affects local vs global view |
-| Elliptic Envelope | Low | Mainly sensitive to data distribution assumptions |
-| DBSCAN | High | `eps` and `min_samples` are critical; use k-distance plot |
+- **How it works:** Computes the ratio of the average local density of a point's k-nearest neighbours to its own local density. A score > 1 indicates an outlier.
+- **Key parameter:** `contamination` — proportion of anomalies; `n_neighbors` — number of nearest neighbours to consider.
+- **Strength:** Detects local anomalies that global methods may miss; does not assume a global model.
 
 ---
 
-## Conclusion
+## Dataset
 
-| Criterion | Best Method |
-|---|---|
-| Overall accuracy (structured data) | **Isolation Forest** |
-| High recall (catch all anomalies) | **DBSCAN** |
-| High precision (minimize false alarms) | **DBSCAN** (synthetic) / **Elliptic Envelope** (BC) |
-| Speed | **One-Class SVM** / **DBSCAN** |
-| High-dimensional data | **Isolation Forest** |
-| Local density anomalies | **LOF** |
+A **synthetic dataset** was constructed using `make_blobs` from scikit-learn:
 
-**Key takeaway:** No single algorithm dominates across all conditions. The best choice depends on the data's shape, dimensionality, and the use case:
+| Component        | Count | Description                              |
+|-----------------|-------|------------------------------------------|
+| Normal samples   | 300   | 2 clusters, `cluster_std=0.8`            |
+| Injected outliers| 30    | Uniform random in range \[-8, 8\]        |
+| **Total**        | **330** | Label: 0 = Normal, 1 = Anomaly         |
 
-- Use **Isolation Forest** as the default — robust, scalable, and well-balanced.
-- Use **DBSCAN** when anomalies naturally form noise outside dense clusters.
-- Use **LOF** when you expect local outliers relative to their neighborhood.
-- Use **Elliptic Envelope** only when data is known to be Gaussian and precision matters.
-- Avoid **One-Class SVM** unless you have time to tune hyperparameters carefully.
-
-In safety-critical domains (e.g., medical diagnosis), **high recall** is preferred over precision — missing an anomaly is more costly than a false alarm. In those cases, DBSCAN or a low-threshold Isolation Forest is preferred.
+All features were standardized using `StandardScaler` before model training. A fixed `random_seed=42` was used for reproducibility.
 
 ---
 
-## Repository Structure
+## What Was Built
 
-```
-Practical-11-Anomaly-Detection/
-|
-|-- anomaly_detection.py       # Main Python script
-|-- README.md                  # This file
-|-- screenshots/
-    |-- anomaly_detection.png  # Output visualization
-```
+A Python notebook (`Anomaly_Detection_Model_Comparison.ipynb`) that:
+
+1. Generates a 2D synthetic dataset with controlled outliers
+2. Trains three anomaly detection models (Isolation Forest, One-Class SVM, LOF)
+3. Predicts anomaly labels (converting sklearn's -1/+1 output to 0/1)
+4. Evaluates using **F1 Score** (since the dataset is imbalanced — 30 anomalies vs 300 normal)
+5. Records and compares **computation time** per model
+6. Produces three visualizations: scatter plot, F1 comparison, and time comparison
 
 ---
 
-## Dependencies
+## Results & Visualizations
 
-```
-numpy
-matplotlib
-scikit-learn
-```
+### Scatter Plot — Isolation Forest Predictions
 
-Install with:
+The scatter plot shows the 2D feature space after standardization. Blue points are predicted **Normal (0)** and Red points are predicted **Anomalies (1)**. The two clusters of normal data are clearly visible, with outliers scattered around the periphery.
 
-```bash
-pip install numpy matplotlib scikit-learn
-```
+![Isolation Forest Scatter Plot](scatter_plot.png)
+
+> Isolation Forest correctly identifies the scattered outlier points while keeping the two dense clusters intact.
+
+---
+
+### F1 Score Comparison
+
+F1 Score is used as the primary evaluation metric because the dataset is **class-imbalanced** (only ~9% anomalies). It balances Precision and Recall:
+
+$$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$
+
+![F1 Score Comparison](f1_score.png)
+
+| Model            | F1 Score |
+|-----------------|----------|
+| Isolation Forest | **0.76** |
+| One-Class SVM    | 0.65     |
+| LOF              | **0.76** |
+
+**Isolation Forest** and **LOF** tie for the best F1 Score of **0.76**, while One-Class SVM lags at **0.65**. One-Class SVM's lower performance may be due to sensitivity to the `nu` parameter and the shape of the data distribution.
+
+---
+
+### Computation Time Comparison
+
+![Computation Time Comparison](time_comparison.png)
+
+| Model            | Time (seconds) |
+|-----------------|----------------|
+| Isolation Forest | 0.5108         |
+| One-Class SVM    | 0.0132         |
+| LOF              | 0.0133         |
+
+**Isolation Forest** is significantly slower (~0.51s) compared to One-Class SVM and LOF (~0.013s each). This is because Isolation Forest builds an **ensemble of 100 trees** (by default), which adds computation overhead. One-Class SVM and LOF are both fast on small datasets.
 
 ---
 
 ## How to Run
 
 ```bash
-# Clone or navigate to the practical folder
-cd Practical-11-Anomaly-Detection
+# Install dependencies
+pip install scikit-learn numpy matplotlib
 
-# Run the script
-python anomaly_detection.py
+# Open and run the notebook
+jupyter notebook Anomaly_Detection_Model_Comparison.ipynb
 ```
 
-**Expected outputs:**
-- `screenshots/anomaly_detection.png` — full visualization grid
-- Terminal metrics report with Precision, Recall, F1, and Time for all methods
+Or run cells sequentially — no external dataset is needed, the synthetic data is generated inside the notebook.
 
 ---
 
-> **Note:** All random seeds are fixed (`random_state=42`, `np.random.seed(42)`) to ensure fully reproducible results across runs.
+## Key Takeaways
+
+- **Best accuracy:** Isolation Forest and LOF both achieve F1 = 0.76, outperforming One-Class SVM.
+- **Fastest models:** One-Class SVM and LOF are ~40× faster than Isolation Forest on this dataset size.
+- **Best overall choice:** LOF offers the best trade-off — high F1 and low computation time.
+- **One-Class SVM** may improve with kernel tuning (`rbf`, `gamma` adjustment) but is harder to configure.
+- F1 Score is preferred over accuracy for anomaly detection due to class imbalance.
+- All three models are **unsupervised** — they require no labels during training, only the contamination ratio as a hint.
+
+---
+
+## Files
+
+```
+Lab11-Anomaly-Detection/
+├── Anomaly_Detection_Model_Comparison.ipynb   # Main experiment notebook
+├── scatter_plot.png                           # Isolation Forest predictions
+├── f1_score.png                               # F1 Score bar chart
+├── time_comparison.png                        # Computation time bar chart
+└── README.md                                  # This file
+```
+
+---
+
+*Lab 11 | Data Mining | Anomaly Detection*
