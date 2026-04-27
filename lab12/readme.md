@@ -89,19 +89,19 @@ A Python notebook (`Ensemble_Learning_Comparison.ipynb`) that:
 
 #### Accuracy
 
-![Breast Cancer Accuracy](Breast_Cancer_accuracy.png)
+![Breast Cancer Accuracy](outputs/Breast_Cancer_accuracy.png)
 
 All models achieve **~95–97% accuracy** on Breast Cancer. Logistic Regression (LR) slightly edges out the rest — the dataset is linearly separable in standardized space. Decision Tree (DT) scores the lowest (~94%) due to overfitting tendencies.
 
 #### F1 Score
 
-![Breast Cancer F1 Score](Breast_Cancer_f1.png)
+![Breast Cancer F1 Score](outputs/Breast_Cancer_f1.png)
 
 F1 trends mirror accuracy closely. LR achieves ~0.97, while DT sits at ~0.94. All ensemble methods (Bagging, RF, AdaBoost, GB, Voting) cluster around 0.95–0.96, showing robust and consistent performance.
 
 #### Training Time
 
-![Breast Cancer Training Time](Breast_Cancer_time.png)
+![Breast Cancer Training Time](outputs/Breast_Cancer_time.png)
 
 | Model    | Approx. Time (s) |
 |---------|-----------------|
@@ -121,19 +121,19 @@ LR and DT are the fastest. Voting Classifier takes the longest since it trains t
 
 #### Accuracy
 
-![Iris Accuracy](Iris_accuracy.png)
+![Iris Accuracy](outputs/Iris_accuracy.png)
 
 Most models achieve **100% accuracy** on Iris, except AdaBoost which scores ~93%. Iris is a small, clean, and relatively easy dataset — most algorithms can fit it nearly perfectly.
 
 #### F1 Score
 
-![Iris F1 Score](Iris_f1.png)
+![Iris F1 Score](outputs/Iris_f1.png)
 
 F1 scores mirror accuracy. LR, DT, Bagging, RF, GB, and Voting all reach **1.00**. AdaBoost again lags at ~0.93, likely because its shallow stumps struggle with the 3-class boundary on this dataset with default settings.
 
 #### Training Time
 
-![Iris Training Time](Iris_time.png)
+![Iris Training Time](outputs/Iris_time.png)
 
 | Model    | Approx. Time (s) |
 |---------|-----------------|
@@ -151,7 +151,7 @@ Times are lower than Breast Cancer due to Iris having fewer samples (150 vs 569)
 
 ### Cross-Dataset F1 Comparison
 
-![Model Comparison](comparison.png)
+![Model Comparison](outputs/comparison.png)
 
 This grouped bar chart directly compares each model's weighted F1 Score across both datasets. Key observations:
 
